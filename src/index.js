@@ -6,17 +6,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ListSightings from "./ListSightings";
 import SingleSighting from "./SingleSighting";
 import NewSighting from "./NewSighting";
+import Landing from "./Landing";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<App />} />
-      <Route path="sightings" element={<ListSightings />} />
-      {/*nested routes*/}
-      <Route path="sightings/:sightingIndex" element={<SingleSighting />} />
-      <Route path="/new" element={<NewSighting />} />
-      <Route path="*" element={"nothing hereee!"} />
+      <Route path="/*" element={<App />} />
     </Routes>
   </BrowserRouter>
 );

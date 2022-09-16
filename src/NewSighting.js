@@ -6,16 +6,18 @@ function NewSighting() {
   const [date, setDate] = useState("");
   const [location, setLocation] = useState("");
   const [notes, setNotes] = useState("");
+  const [categoryId, setCategoryId] = useState("");
   const navigate = useNavigate("");
 
   const submitNew = (e) => {
     e.preventDefault();
 
-    const submitBody = { date, location, notes };
-    axios.post("http://localhost:3001/sightings", submitBody).then((res) => {
+    const submitBody = { date, location, notes, categoryId };
+    axios.post("http://localhost:3000/sightings", submitBody).then((res) => {
       setDate("");
       setLocation("");
       setNotes("");
+      setCategoryId("");
       navigate(`/sightings/${res.data.id}`);
     });
   };
@@ -51,6 +53,13 @@ function NewSighting() {
           placeholder="notes?"
           onChange={(e) => setNotes(e.target.value)}
         />
+        <input
+          type="text"
+          value={categoryId}
+          placeholder="which category?"
+          onChange={(e) => setCategoryId(e.target.value)}
+        />
+
         <input type="submit" value="add new sighting" />
       </form>
     </div>

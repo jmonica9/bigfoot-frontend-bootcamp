@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Outlet, Link, useNavigate } from "react-router-dom";
-
+import {
+  Card,
+  CardContent,
+  CardActions,
+  Typography,
+  Button,
+  TextField,
+} from "@mui/material";
+import SightingLinks from "./SightingLinks";
 export default function ListSightings() {
   const [sightingData, setSightingData] = useState();
   const [inputIndex, setInputIndex] = useState("");
@@ -9,7 +17,7 @@ export default function ListSightings() {
   useEffect(() => {
     const listSightings = async () => {
       try {
-        const data = await axios.get("http://localhost:3001/sightings");
+        const data = await axios.get("http://localhost:3000/sightings");
         console.log(data.data);
         setSightingData(data.data);
       } catch (error) {
@@ -24,68 +32,76 @@ export default function ListSightings() {
 
   return (
     <div>
-      <button
+      {sightingData && sightingData.length > 0 ? (
+        <SightingLinks sightingData={sightingData} />
+      ) : (
+        "wait for links"
+      )}
+      {/* <button
         onClick={(e) => {
           navigate("/");
         }}
       >
         Home
-      </button>
-      <button
-        onClick={(e) => {
-          navigate("/new");
-        }}
+      </button> */}
+      {/* <Button
+        variant="contained"
+        aria-label="outlined primary button group"
+        onClick={(e) => navigate("/new")}
       >
         Add new sighting
-      </button>
+      </Button>{" "} */}
       <br></br>
-      <input
+      <TextField
+        id="standard-basic"
+        label="Report Number"
+        variant="standard"
+        type="text"
+        value={inputIndex}
+        onChange={(e) => {
+          setInputIndex(e.target.value);
+        }}
+        placeholder="Report Number?"
+      />
+      {/* <input
         type="text"
         value={inputIndex}
         onChange={(e) => {
           setInputIndex(e.target.value);
         }}
         placeholder="type index here"
-      />
-      <button
+      /> */}
+      <Button
         type="submit"
+        variant="outlined"
+        aria-label="outlined primary button group"
         onClick={(e) => {
           e.preventDefault();
           navigate(`/sightings/${inputIndex}`);
         }}
       >
         Find Sighting
-      </button>
-
-      <div style={{ display: "flex" }}>
-        <nav
-          style={{
-            borderRight: "solid 1px",
-            padding: "1rem",
-          }}
-        >
-          {sightingData && sightingData.length > 0
-            ? sightingData.map((data) => (
-                <Link
-                  style={{ display: "inline", margin: "1rem 0" }}
-                  to={`/sightings/${data.id}`}
-                  key={data.id}
-                >
-                  Report {data.id} <br></br>
-                </Link>
-              ))
-            : "wait for links"}
-        </nav>
-
-        <Outlet />
-      </div>
+      </Button>
+      <div style={{ display: "flex" }}></div>
       <div>
         <ul>
           {sightingData && sightingData.length > 0
             ? sightingData.map((item, i) => (
-                <li key={i}>
-                  {item.date} in {item.location}: {item.notes}
-                </li>
+                <Card key={i} sx={{ minWidth: 275 }}>
+                  <CardContent>
+                    <Typography
+                      sx={{ fontSize: 14 }}
+                      color="text.secondary"
+                      gutterBottom
+                    >
+                      {item.date} in {item.location}
+                    </Typography>
+                    <Typography variant="body2">{item.notes}</Typography>
+                  </CardContent>
+                  {/* <CardActions> */}
+                  {/* <Button size="small">G</Button> */}
+                  {/* </CardActions> */}
+                </Card>
               ))
             : "not showing yet"}
         </ul>
